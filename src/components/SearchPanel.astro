@@ -9,6 +9,7 @@
 
 <script>
   import MiniSearch from "minisearch";
+  import { collectSearchTags } from "../lib/search-tags";
   import { tokenizeSearchText } from "../lib/search-tokenize";
 
   const input = document.querySelector("[data-search-input]");
@@ -16,6 +17,9 @@
   const status = document.querySelector("[data-search-status]");
 
   if (input instanceof HTMLInputElement && resultsContainer instanceof HTMLElement && status instanceof HTMLElement) {
+    const searchInput = input;
+    const searchResults = resultsContainer;
+    const searchStatus = status;
     const response = await fetch(`${import.meta.env.BASE_URL}search-index.json`);
     const documents = await response.json();
     const search = new MiniSearch({
@@ -30,18 +34,23 @@
     });
 
     search.addAll(documents);
+    const tags = collectSearchTags(documents);
 
-    input.addEventListener("input", () => {
-      const query = input.value.trim();
-      resultsContainer.replaceChildren();
+    searchInput.addEventListener("input", renderSearchState);
+    renderSearchState();
+
+    function renderSearchState() {
+      const query = searchInput.value.trim();
+      searchResults.replaceChildren();
 
       if (!query) {
-        status.textContent = "Type to search";
+        searchStatus.textContent = tags.length ? "Filter by tag" : "Type to search";
+        renderTags(tags);
         return;
       }
 
       const results = search.search(query).slice(0, 20);
-      status.textContent = `${results.length} result${results.length === 1 ? "" : "s"}`;
+      searchStatus.textContent = `${results.length} result${results.length === 1 ? "" : "s"}`;
 
       for (const result of results) {
         const link = document.createElement("a");
@@ -61,9 +70,28 @@
         snippet.textContent = makeSnippet(String(result.description || result.body), query);
 
         link.append(title, file, snippet);
-        resultsContainer.append(link);
+        searchResults.append(link);
       }
-    });
+    }
+
+    function renderTags(tagList: string[]) {
+      const list = document.createElement("div");
+      list.className = "search-tag-list";
+
+      for (const tag of tagList) {
+        const button = document.createElement("button");
+        button.className = "search-tag";
+        button.type = "button";
+        button.textContent = tag;
+        button.addEventListener("click", () => {
+          searchInput.value = tag;
+          renderSearchState();
+        });
+        list.append(button);
+      }
+
+      searchResults.append(list);
+    }
   }
 
   function makeSnippet(text: string, query: string) {

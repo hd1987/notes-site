@@ -52,6 +52,8 @@ notes-site/
 │   ├── lib/
 │   │   ├── notes.ts
 │   │   ├── search.ts
+│   │   ├── search-tags.ts
+│   │   ├── search-tokenize.ts
 │   │   └── slug.ts
 │   └── styles/
 │       └── global.css
@@ -61,7 +63,9 @@ notes-site/
 ├── package-lock.json
 ├── package.json
 ├── tests/
-│   └── notes.test.ts
+│   ├── notes.test.ts
+│   ├── search-tags.test.ts
+│   └── search-tokenize.test.ts
 └── tsconfig.json
 ```
 
@@ -84,6 +88,21 @@ tags: [tts, ai, translation]
 created: 2026-05-29
 updated: 2026-05-29
 ---
+```
+
+`tags` 必须使用 inline array 格式：
+
+```yaml
+tags: [tts, ai, translation]
+```
+
+不使用 YAML block list 格式：
+
+```yaml
+tags:
+  - tts
+  - ai
+  - translation
 ```
 
 兼容旧 Markdown：
@@ -165,6 +184,9 @@ URL slug 规则：
 - 点击 Outline 跳转到对应标题
 - 滚动时高亮当前标题
 - 全文搜索文章标题、摘要、正文和标签
+- 搜索支持中文中间词命中，例如 `Git基础` 可通过 `基础` 命中
+- Search input 为空时显示全部 tags
+- 点击 tag 后将 tag 写入 Search input 并执行 tag 搜索
 - 搜索结果显示标题、片段和所属文件
 - Markdown 渲染支持标题、列表、表格、引用、代码块、任务列表
 - GitHub Actions 自动构建并发布到 GitHub Pages
@@ -208,9 +230,18 @@ import.meta.env.BASE_URL + "search-index.json"
 搜索行为：
 
 - 用户输入关键词后左侧栏切换到 `Search`
+- Search input 为空时显示去重并排序后的全部 tags
+- 点击 tag 后填入 Search input，并立即执行搜索
 - 搜索结果按相关度排序
 - 每条结果显示文章标题、命中片段和文件名
 - 点击结果跳转到对应文章
+
+中文搜索：
+
+- MiniSearch 使用自定义 tokenizer
+- 英文和数字按连续片段生成 token
+- 中文、日文、韩文按连续字符组生成单字和双字 token
+- 目的是支持中文标题、摘要和正文中的中间词搜索
 
 ## GitHub Pages 部署
 
@@ -320,6 +351,9 @@ npm run preview
 - Outline 能跳转到标题
 - 滚动时 Outline 高亮正确
 - 搜索能命中文章正文
+- 搜索能命中文章标题中的中文中间词
+- Search input 为空时能显示全部 tags
+- 点击 tag 后能执行 tag 搜索
 - 代码块显示正常
 - 表格显示正常
 - 任务列表显示正常

@@ -156,8 +156,28 @@ input {
   border: 1px solid transparent;
 }
 
+.search-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+}
+
+.search-tag {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: #fbfcfe;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
 .article-link:hover,
 .search-result:hover,
+.search-tag:hover,
 .article-link.is-active {
   background: var(--accent-soft);
   border-color: #cfddff;
