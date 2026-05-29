@@ -1,0 +1,303 @@
+# Markdown notes Site 第一版方案
+
+## 结论
+
+新建独立项目 `notes-site`，做成一个 GitHub Pages 自动部署的 Markdown 知识库静态站点。
+
+第一版只做内容展示、文章切换、目录跳转、全文搜索和 GitHub 自动部署。不做编辑、登录、评论、数据库、后台管理和 AI 问答。Markdown 文件是唯一数据源。
+
+## 技术方案
+
+使用 `Astro + TypeScript`。
+
+核心依赖：
+
+- `astro`：静态站点生成
+- `shiki`：代码高亮
+- `minisearch`：前端全文搜索
+
+第一版不引入 React，搜索、移动端抽屉和 Outline 高亮使用 Astro + vanilla TypeScript 实现。
+
+Astro 默认启用 GFM，第一版不额外配置 Markdown remark 插件。
+
+构建结果输出到 `dist/`，由 GitHub Actions 发布到 GitHub Pages。
+
+## 项目结构
+
+```text
+notes-site/
+├── CLAUDE.md
+├── README.md
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+├── src/
+│   ├── components/
+│   │   ├── ArticleList.astro
+│   │   ├── ArticleOutline.astro
+│   │   ├── SearchPanel.astro
+│   │   └── TopBar.astro
+│   ├── content/
+│   │   └── notes/
+│   │       ├── TTS.md
+│   │       └── 自建中文到英文实时同传方案.md
+│   ├── content.config.ts
+│   ├── layouts/
+│   │   └── NoteLayout.astro
+│   ├── pages/
+│   │   ├── index.astro
+│   │   ├── search-index.json.ts
+│   │   └── notes/
+│   │       └── [...slug].astro
+│   ├── lib/
+│   │   ├── notes.ts
+│   │   ├── search.ts
+│   │   └── slug.ts
+│   └── styles/
+│       └── global.css
+├── public/
+├── astro.config.mjs
+├── package.json
+└── tsconfig.json
+```
+
+## 内容规范
+
+Markdown 文件统一放在：
+
+```text
+src/content/notes/
+```
+
+每篇文章建议使用 frontmatter：
+
+```md
+---
+title: Live Translation - 本地同声传译管道
+slug: live-translation-local-pipeline
+description: MacBook Pro 上的全本地同声传译系统
+tags: [tts, ai, translation]
+created: 2026-05-29
+updated: 2026-05-29
+---
+```
+
+兼容旧 Markdown：
+
+- 有 `title` 时使用 `title`
+- 没有 `title` 时使用第一个一级标题
+- 没有一级标题时使用文件名
+
+URL slug 规则：
+
+- 有 frontmatter `slug` 时使用 `slug`
+- 没有 `slug` 时使用 Markdown 文件相对路径生成 slug
+- `slug` 必须唯一，冲突时 build 失败
+- 新增文章推荐显式填写稳定英文 `slug`
+
+文章排序规则：
+
+1. `updated` 降序
+2. `created` 降序
+3. `title` 升序
+4. 文件路径升序
+
+`src/content.config.ts` 使用 `defineCollection`、`glob({ pattern: "**/*.md", base: "./src/content/notes" })` 和 Zod schema 定义 `notes` collection。
+
+## 页面设计
+
+页面参考 Typora 阅读界面。
+
+桌面端布局：
+
+- 左侧栏宽度约 `260px`
+- 右侧为正文阅读区
+- 正文最大宽度约 `860px`
+- 顶部显示当前文件名
+
+左侧栏包含三种状态：
+
+- `Articles`：文章列表
+- `Outline`：当前文章目录
+- `Search`：搜索结果
+
+正文样式：
+
+- 白色背景
+- 浅灰边框和分割线
+- 中文阅读行高优化
+- 代码块浅灰背景
+- inline code 灰底
+- 表格细边框
+- 引用块左边框
+- 任务列表保留 checkbox
+
+移动端：
+
+- 左侧栏收起为抽屉
+- 正文宽度自适应
+- 顶部保留菜单按钮和当前文件名
+
+## 第一版功能
+
+必须实现：
+
+- 自动读取 `src/content/notes/**/*.md`
+- 为每篇 Markdown 生成静态文章页
+- 首页默认打开排序后的第一篇文章
+- 左侧显示文章列表
+- 点击文章跳转到对应静态文章页
+- 当前文章自动生成 Outline
+- 点击 Outline 跳转到对应标题
+- 滚动时高亮当前标题
+- 全文搜索文章标题、摘要、正文和标签
+- 搜索结果显示标题、片段和所属文件
+- Markdown 渲染支持标题、列表、表格、引用、代码块、任务列表
+- GitHub Actions 自动构建并发布到 GitHub Pages
+
+明确不做：
+
+- 在线编辑
+- 登录
+- 评论
+- 数据库
+- 后台管理
+- AI 问答
+- 多用户协作
+
+## 搜索设计
+
+使用 `MiniSearch` 做前端本地搜索。
+
+搜索索引由 Astro endpoint 在构建时生成：
+
+```text
+src/pages/search-index.json.ts
+```
+
+本地访问路径为 `/search-index.json`；部署到 GitHub Pages 后路径为 `/<repo-name>/search-index.json`。
+
+前端请求搜索索引时必须使用：
+
+```ts
+import.meta.env.BASE_URL + "search-index.json"
+```
+
+索引字段：
+
+- `title`
+- `description`
+- `tags`
+- `body`
+- `url`
+
+搜索行为：
+
+- 用户输入关键词后左侧栏切换到 `Search`
+- 搜索结果按相关度排序
+- 每条结果显示文章标题、命中片段和文件名
+- 点击结果跳转到对应文章
+
+## GitHub Pages 部署
+
+`astro.config.mjs`：
+
+```js
+import { defineConfig } from "astro/config";
+
+export default defineConfig({
+  site: "https://<github-username>.github.io",
+  base: "/<repo-name>/",
+});
+```
+
+如果仓库名是 `notes-site`，访问地址为：
+
+```text
+https://<github-username>.github.io/notes-site/
+```
+
+`.github/workflows/deploy.yml`：
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: withastro/action@v6
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
+```
+
+## 实施顺序
+
+1. 新建 `notes-site` 独立项目。
+2. 创建 `CLAUDE.md`，写清目录、内容、部署和验证规则。
+3. 初始化 `Astro + TypeScript`。
+4. 创建 `src/content/notes/`。
+5. 导入现有 Markdown 文件。
+6. 实现 Markdown 读取、slug 生成和静态路由。
+7. 实现首页直接渲染排序后的第一篇文章。
+8. 实现 Typora 风格页面布局。
+9. 实现文章列表。
+10. 实现当前文章 Outline。
+11. 实现全文搜索索引和搜索面板。
+12. 配置 GitHub Actions 和 GitHub Pages。
+13. 本地执行构建验证。
+14. 本地验证通过后，由用户决定是否 push 到 GitHub；push 后检查 Pages 站点。
+
+## 验收标准
+
+本地验证命令：
+
+```bash
+npm run build
+npm run preview
+```
+
+本地验收：
+
+- 首页能打开默认文章
+- 所有 Markdown 文件能生成页面
+- 文章列表能切换文章
+- Outline 能跳转到标题
+- 滚动时 Outline 高亮正确
+- 搜索能命中文章正文
+- 代码块显示正常
+- 表格显示正常
+- 任务列表显示正常
+- 移动端没有明显遮挡
+
+GitHub Pages 验收：
+
+- push 到 `main` 后 Actions 成功
+- GitHub Pages 能访问
+- 刷新文章详情页不 404
+- CSS 和 JS 路径正确
+- 中文标题显示正常
+- 搜索索引加载正常
