@@ -9,6 +9,7 @@
 
 <script>
   import MiniSearch from "minisearch";
+  import { tokenizeSearchText } from "../lib/search-tokenize";
 
   const input = document.querySelector("[data-search-input]");
   const resultsContainer = document.querySelector("[data-search-results]");
@@ -20,6 +21,7 @@
     const search = new MiniSearch({
       fields: ["title", "description", "tags", "body"],
       storeFields: ["title", "description", "url", "filePath", "body"],
+      tokenize: tokenizeSearchText,
       searchOptions: {
         boost: { title: 3, tags: 2 },
         fuzzy: 0.2,
