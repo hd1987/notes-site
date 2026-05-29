@@ -15,6 +15,10 @@ type Props = {
 
 const { notes, currentNote, headings = [] } = Astro.props;
 const pageTitle = currentNote ? `${currentNote.title} - notes-site` : "notes-site";
+
+function formatDate(date: Date | undefined) {
+  return date ? date.toISOString().slice(0, 10) : "";
+}
 ---
 
 <!doctype html>
@@ -51,7 +55,15 @@ const pageTitle = currentNote ? `${currentNote.title} - notes-site` : "notes-sit
           currentNote ? (
             <article class="note-article">
               <div class="note-header">
-                <p class="note-file">{currentNote.filePath}</p>
+                <p class="note-file">
+                  <span>{currentNote.filePath}</span>
+                  {formatDate(currentNote.created) && (
+                    <time datetime={formatDate(currentNote.created)}>created {formatDate(currentNote.created)}</time>
+                  )}
+                  {formatDate(currentNote.updated) && (
+                    <time datetime={formatDate(currentNote.updated)}>updated {formatDate(currentNote.updated)}</time>
+                  )}
+                </p>
                 <h1>{currentNote.title}</h1>
                 {currentNote.description && <p class="note-description">{currentNote.description}</p>}
               </div>

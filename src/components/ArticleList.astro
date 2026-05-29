@@ -8,6 +8,10 @@ type Props = {
 };
 
 const { notes, currentSlug } = Astro.props;
+
+function formatDate(date: Date | undefined) {
+  return date ? date.toISOString().slice(0, 10) : "";
+}
 ---
 
 <nav class="article-list" aria-label="Articles">
@@ -17,8 +21,16 @@ const { notes, currentSlug } = Astro.props;
         class:list={["article-link", { "is-active": note.slug === currentSlug }]}
         href={withBasePath(note.url)}
       >
+        <span class="article-meta">
+          {
+            note.tags.slice(0, 3).map((tag) => (
+              <span class="article-tag">{tag}</span>
+            ))
+          }
+          {formatDate(note.updated) && <time datetime={formatDate(note.updated)}>{formatDate(note.updated)}</time>}
+        </span>
         <span class="article-title">{note.title}</span>
-        <span class="article-meta">{note.filePath}</span>
+        {note.description && <span class="article-description">{note.description}</span>}
       </a>
     ))
   }
