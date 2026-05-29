@@ -1,0 +1,22 @@
+{
+  "name": "notes-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "astro": "^5.16.0",
+    "minisearch": "^7.2.0",
+    "typescript": "^5.9.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.0"
+  }
+}

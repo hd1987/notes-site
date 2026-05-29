@@ -1,0 +1,26 @@
+---
+import { getCollection, render } from "astro:content";
+import NoteLayout from "../../layouts/NoteLayout.astro";
+import { buildNoteRecords, findNoteBySlug, sortNoteRecords } from "../../lib/notes";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("notes");
+  const notes = sortNoteRecords(buildNoteRecords(entries));
+
+  return notes.map((note) => ({
+    params: { slug: note.slug },
+    props: { noteId: note.id },
+  }));
+}
+
+const entries = await getCollection("notes");
+const notes = sortNoteRecords(buildNoteRecords(entries));
+const currentNote = findNoteBySlug(notes, Astro.params.slug ?? "");
+const currentEntry = entries.find((entry) => entry.id === Astro.props.noteId);
+const rendered = currentEntry ? await render(currentEntry) : undefined;
+const Content = rendered?.Content;
+---
+
+<NoteLayout notes={notes} currentNote={currentNote} headings={rendered?.headings ?? []}>
+  {Content && <Content />}
+</NoteLayout>

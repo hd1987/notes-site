@@ -1,0 +1,120 @@
+---
+import ArticleList from "../components/ArticleList.astro";
+import ArticleOutline from "../components/ArticleOutline.astro";
+import SearchPanel from "../components/SearchPanel.astro";
+import TopBar from "../components/TopBar.astro";
+import "../styles/global.css";
+import type { NoteRecord } from "../lib/notes";
+import type { MarkdownHeading } from "astro";
+
+type Props = {
+  notes: NoteRecord[];
+  currentNote?: NoteRecord;
+  headings?: MarkdownHeading[];
+};
+
+const { notes, currentNote, headings = [] } = Astro.props;
+const pageTitle = currentNote ? `${currentNote.title} - notes-site` : "notes-site";
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={currentNote?.description || "Markdown notes site"} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <div class="site-shell" data-shell>
+      <TopBar title={currentNote?.title ?? "notes-site"} />
+      <aside class="sidebar" data-sidebar>
+        <div class="sidebar-tabs" role="tablist" aria-label="Sidebar views">
+          <button class="sidebar-tab is-active" type="button" data-tab-button="articles">Articles</button>
+          <button class="sidebar-tab" type="button" data-tab-button="outline">Outline</button>
+          <button class="sidebar-tab" type="button" data-tab-button="search">Search</button>
+        </div>
+
+        <section class="sidebar-panel is-active" data-tab-panel="articles">
+          <ArticleList notes={notes} currentSlug={currentNote?.slug} />
+        </section>
+        <section class="sidebar-panel" data-tab-panel="outline">
+          <ArticleOutline headings={headings} />
+        </section>
+        <section class="sidebar-panel" data-tab-panel="search">
+          <SearchPanel />
+        </section>
+      </aside>
+
+      <main class="content-shell">
+        {
+          currentNote ? (
+            <article class="note-article">
+              <div class="note-header">
+                <p class="note-file">{currentNote.filePath}</p>
+                <h1>{currentNote.title}</h1>
+                {currentNote.description && <p class="note-description">{currentNote.description}</p>}
+              </div>
+              <slot />
+            </article>
+          ) : (
+            <article class="note-article empty-note">
+              <h1>No notes found</h1>
+              <p>Add Markdown files to <code>src/content/notes/</code>.</p>
+            </article>
+          )
+        }
+      </main>
+    </div>
+
+    <script>
+      const shell = document.querySelector("[data-shell]");
+      const tabButtons = document.querySelectorAll("[data-tab-button]");
+      const tabPanels = document.querySelectorAll("[data-tab-panel]");
+
+      for (const button of tabButtons) {
+        button.addEventListener("click", () => {
+          const target = button.getAttribute("data-tab-button");
+
+          for (const item of tabButtons) {
+            item.classList.toggle("is-active", item === button);
+          }
+
+          for (const panel of tabPanels) {
+            panel.classList.toggle("is-active", panel.getAttribute("data-tab-panel") === target);
+          }
+        });
+      }
+
+      document.addEventListener("click", (event) => {
+        if (!(event.target instanceof Element)) return;
+        if (event.target.closest("[data-sidebar], [data-menu-button]")) return;
+        shell?.classList.remove("is-sidebar-open");
+      });
+
+      const outlineLinks = [...document.querySelectorAll(".outline-link")];
+      const headings = outlineLinks
+        .map((link) => document.getElementById(link.getAttribute("href")?.slice(1) ?? ""))
+        .filter((heading): heading is HTMLElement => heading instanceof HTMLElement);
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+          if (!visible) return;
+
+          for (const link of outlineLinks) {
+            link.classList.toggle("is-current", link.getAttribute("href") === `#${visible.target.id}`);
+          }
+        },
+        { rootMargin: "-10% 0px -70% 0px", threshold: [0, 1] },
+      );
+
+      for (const heading of headings) {
+        observer.observe(heading);
+      }
+    </script>
+  </body>
+</html>

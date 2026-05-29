@@ -1,0 +1,73 @@
+<section class="search-panel" aria-label="Search">
+  <label class="search-box">
+    <span class="sr-only">Search notes</span>
+    <input data-search-input type="search" placeholder="Search notes" autocomplete="off" />
+  </label>
+  <div data-search-status class="search-status">Type to search</div>
+  <div data-search-results class="search-results"></div>
+</section>
+
+<script>
+  import MiniSearch from "minisearch";
+
+  const input = document.querySelector("[data-search-input]");
+  const resultsContainer = document.querySelector("[data-search-results]");
+  const status = document.querySelector("[data-search-status]");
+
+  if (input instanceof HTMLInputElement && resultsContainer instanceof HTMLElement && status instanceof HTMLElement) {
+    const response = await fetch(`${import.meta.env.BASE_URL}search-index.json`);
+    const documents = await response.json();
+    const search = new MiniSearch({
+      fields: ["title", "description", "tags", "body"],
+      storeFields: ["title", "description", "url", "filePath", "body"],
+      searchOptions: {
+        boost: { title: 3, tags: 2 },
+        fuzzy: 0.2,
+        prefix: true,
+      },
+    });
+
+    search.addAll(documents);
+
+    input.addEventListener("input", () => {
+      const query = input.value.trim();
+      resultsContainer.replaceChildren();
+
+      if (!query) {
+        status.textContent = "Type to search";
+        return;
+      }
+
+      const results = search.search(query).slice(0, 20);
+      status.textContent = `${results.length} result${results.length === 1 ? "" : "s"}`;
+
+      for (const result of results) {
+        const link = document.createElement("a");
+        link.className = "search-result";
+        link.href = String(result.url);
+
+        const title = document.createElement("span");
+        title.className = "search-result-title";
+        title.textContent = String(result.title);
+
+        const file = document.createElement("span");
+        file.className = "search-result-file";
+        file.textContent = String(result.filePath);
+
+        const snippet = document.createElement("span");
+        snippet.className = "search-result-snippet";
+        snippet.textContent = makeSnippet(String(result.description || result.body), query);
+
+        link.append(title, file, snippet);
+        resultsContainer.append(link);
+      }
+    });
+  }
+
+  function makeSnippet(text: string, query: string) {
+    const clean = text.replace(/\s+/g, " ").trim();
+    const index = clean.toLowerCase().indexOf(query.toLowerCase());
+    if (index < 0) return clean.slice(0, 150);
+    return clean.slice(Math.max(0, index - 50), index + 100);
+  }
+</script>

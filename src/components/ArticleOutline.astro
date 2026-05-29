@@ -1,0 +1,23 @@
+---
+import type { MarkdownHeading } from "astro";
+
+type Props = {
+  headings: MarkdownHeading[];
+};
+
+const headings = Astro.props.headings.filter((heading) => heading.depth > 1 && heading.depth <= 4);
+---
+
+<nav class="outline-list" aria-label="Outline">
+  {
+    headings.length > 0 ? (
+      headings.map((heading) => (
+        <a class={`outline-link depth-${heading.depth}`} href={`#${heading.slug}`}>
+          {heading.text}
+        </a>
+      ))
+    ) : (
+      <p class="empty-state">No outline</p>
+    )
+  }
+</nav>

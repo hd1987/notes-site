@@ -1,0 +1,23 @@
+---
+type Props = {
+  title: string;
+};
+
+const { title } = Astro.props;
+---
+
+<header class="top-bar">
+  <button class="icon-button menu-button" type="button" aria-label="Open navigation" data-menu-button>
+    <span aria-hidden="true">☰</span>
+  </button>
+  <div class="top-title">{title}</div>
+</header>
+
+<script>
+  const button = document.querySelector("[data-menu-button]");
+  const shell = document.querySelector("[data-shell]");
+
+  button?.addEventListener("click", () => {
+    shell?.classList.toggle("is-sidebar-open");
+  });
+</script>

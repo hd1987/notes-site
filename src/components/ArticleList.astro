@@ -1,0 +1,25 @@
+---
+import type { NoteRecord } from "../lib/notes";
+import { withBasePath } from "../lib/paths";
+
+type Props = {
+  notes: NoteRecord[];
+  currentSlug?: string;
+};
+
+const { notes, currentSlug } = Astro.props;
+---
+
+<nav class="article-list" aria-label="Articles">
+  {
+    notes.map((note) => (
+      <a
+        class:list={["article-link", { "is-active": note.slug === currentSlug }]}
+        href={withBasePath(note.url)}
+      >
+        <span class="article-title">{note.title}</span>
+        <span class="article-meta">{note.filePath}</span>
+      </a>
+    ))
+  }
+</nav>
