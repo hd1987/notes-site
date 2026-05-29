@@ -56,8 +56,12 @@ notes-site/
 │   └── styles/
 │       └── global.css
 ├── public/
+│   └── CNAME
 ├── astro.config.mjs
+├── package-lock.json
 ├── package.json
+├── tests/
+│   └── notes.test.ts
 └── tsconfig.json
 ```
 
@@ -175,7 +179,7 @@ URL slug 规则：
 src/pages/search-index.json.ts
 ```
 
-本地访问路径为 `/search-index.json`；部署到 GitHub Pages 后路径为 `/<repo-name>/search-index.json`。
+访问路径为 `/search-index.json`。
 
 前端请求搜索索引时必须使用：
 
@@ -206,15 +210,33 @@ import.meta.env.BASE_URL + "search-index.json"
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://<github-username>.github.io",
-  base: "/<repo-name>/",
+  site: "https://notes.adihuang.com",
+  base: "/",
 });
 ```
 
-如果仓库名是 `notes-site`，访问地址为：
+站点访问地址为：
 
 ```text
-https://<github-username>.github.io/notes-site/
+https://notes.adihuang.com/
+```
+
+自定义域名文件：
+
+```text
+public/CNAME
+```
+
+内容：
+
+```text
+notes.adihuang.com
+```
+
+DNS 记录：
+
+```text
+notes CNAME hd1987.github.io
 ```
 
 `.github/workflows/deploy.yml`：
@@ -296,6 +318,10 @@ npm run preview
 GitHub Pages 验收：
 
 - push 到 `main` 后 Actions 成功
+- Source 使用 `GitHub Actions`
+- Custom domain 设置为 `notes.adihuang.com`
+- DNS 检查成功
+- `github-pages` environment 允许 `main` 分支部署
 - GitHub Pages 能访问
 - 刷新文章详情页不 404
 - CSS 和 JS 路径正确
