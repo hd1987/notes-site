@@ -71,7 +71,12 @@ input {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 18px;
+}
+
+.site-title {
+  color: var(--heading);
+  font-weight: 650;
 }
 
 .icon-button {
