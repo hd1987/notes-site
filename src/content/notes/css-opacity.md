@@ -2,8 +2,7 @@
 title: "css透明度设置opacity"
 slug: "css-opacity"
 description: ""
-tags:
-  - "css"
+tags: ["css"]
 created: "2016-03-24"
 updated: "2016-03-24"
 ---

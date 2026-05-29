@@ -2,9 +2,7 @@
 title: "create-react-app 使用摘要"
 slug: "npm-create-react-app"
 description: "Github地址: create react app 安装、启动命令 初始目录结构"
-tags:
-  - "npm"
-  - "react"
+tags: ["npm", "react"]
 created: "2018-02-22"
 updated: "2018-02-22"
 ---

@@ -2,9 +2,7 @@
 title: "nvm usage"
 slug: "nvm-usage"
 description: "显示帮助信息 打印出安装的nvm版本 从源代码下载并安装 <version , [ s]。 如果可用，使用 .nvmrc 卸载一个版本 使用自动 LTS（长期支持）别名“lts/ ”（如果可用）进行卸载。 使用提供的 LTS 行的自动别名（如果可用）进行卸载。 修改 PATH 以"
-tags:
-  - "nodejs"
-  - "nvm"
+tags: ["nodejs", "nvm"]
 created: "2024-01-09"
 updated: "2024-01-09"
 ---

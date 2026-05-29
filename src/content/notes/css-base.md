@@ -2,8 +2,7 @@
 title: "base.css"
 slug: "css-base"
 description: "常用的base.css初始化样式"
-tags:
-  - "css"
+tags: ["css"]
 created: "2016-10-10"
 updated: "2016-10-10"
 ---

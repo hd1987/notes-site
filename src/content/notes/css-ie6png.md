@@ -2,9 +2,7 @@
 title: "IE6 png图片透明的2种方法"
 slug: "css-ie6png"
 description: "一.图片当背景，CSS方法 但是测试发现当给background:red url(logo.png) no repeat center;加了红色时，别的浏览器正常识别，ie6会出现依旧不识别的情况。 解决办法是在外面套的标签，或body加背景色。（background color"
-tags:
-  - "css"
-  - "js"
+tags: ["css", "js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

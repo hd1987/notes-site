@@ -2,9 +2,7 @@
 title: "Retina屏幕下border 1px解决方案"
 slug: "css-retinal-border"
 description: "retinal屏幕下@2x, @3x会使css设定好的border 1px变成2倍或者3倍。 以@2x为例，用css解决这个放大的问题（此方法能解决直线）"
-tags:
-  - "css"
-  - "retina"
+tags: ["css", "retina"]
 created: "2016-10-04"
 updated: "2016-10-04"
 ---

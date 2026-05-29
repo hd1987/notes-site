@@ -2,8 +2,7 @@
 title: "checkbox 全选 反选"
 slug: "js-checkbox-checkedall"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

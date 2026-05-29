@@ -2,9 +2,7 @@
 title: "移动端wap用到的头部信息代码meta"
 slug: "html-meta"
 description: ""
-tags:
-  - "html"
-  - "meta"
+tags: ["html", "meta"]
 created: "2016-03-22"
 updated: "2016-03-22"
 ---

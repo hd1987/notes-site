@@ -2,9 +2,7 @@
 title: "Meta告知IE浏览器兼容模式"
 slug: "html-meta-equiv"
 description: "x ua compatible(浏览器兼容模式) 仅对IE8+以效 告诉浏览器以什么版本的IE的兼容模式来显示网页 其中最后一行IE=edge是永远以最新的IE版本模式来显示网页的。 另外加上Emulate模式 Emulate模式后则更重视<!DOCTYPE (细心的人会注意到，"
-tags:
-  - "html"
-  - "meta"
+tags: ["html", "meta"]
 created: "2016-03-23"
 updated: "2016-03-23"
 ---

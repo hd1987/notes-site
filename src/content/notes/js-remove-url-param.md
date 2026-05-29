@@ -2,8 +2,7 @@
 title: "js去除url指定参数"
 slug: "js-remove-url-param"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2022-12-13"
 updated: "2022-12-13"
 ---

@@ -2,8 +2,7 @@
 title: "textarea自适应高度"
 slug: "js-textarea-height-auto"
 description: "html部分 js部分"
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

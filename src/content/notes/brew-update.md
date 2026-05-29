@@ -2,8 +2,7 @@
 title: "homebrew升级更新卸载常用命令"
 slug: "brew-update"
 description: "一般来说如果你追求新版本（不升级不舒服斯基），那么你最常用的操作序列就是这样： brew search MySQL brew info mysql 主要看具体的信息，比如目前的版本，依赖，安装后注意事项等 brew update 这会更新 Homebrew 自己，并且使得接下来的"
-tags:
-  - "brew"
+tags: ["brew"]
 created: "2017-05-24"
 updated: "2017-05-24"
 ---

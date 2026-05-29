@@ -2,8 +2,7 @@
 title: "文字超出范围以省略号表示"
 slug: "css-overflow"
 description: "适用范围： 因使用了WebKit的CSS扩展属性，该方法适用于WebKit浏览器及移动端； 说明： 1. webkit line clamp 用来限制在一个块元素显示的文本的行数。 为了实现该效果，它需要组合其他的WebKit属性。常见结合属性： 2. display: webk"
-tags:
-  - "css"
+tags: ["css"]
 created: "2016-03-24"
 updated: "2016-03-24"
 ---

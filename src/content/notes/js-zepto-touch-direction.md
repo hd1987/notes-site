@@ -2,9 +2,7 @@
 title: "zepto判断左右滑动"
 slug: "js-zepto-touch-direction"
 description: ""
-tags:
-  - "js"
-  - "zepto"
+tags: ["js", "zepto"]
 created: "2016-03-26"
 updated: "2016-03-26"
 ---

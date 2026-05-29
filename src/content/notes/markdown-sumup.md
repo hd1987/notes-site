@@ -2,8 +2,7 @@
 title: "markdown常用基本语法概括"
 slug: "markdown-sumup"
 description: "在Markdown当中设置标题，有两种方式： 第一种：通过在文字下方添加“=”和“ ”，他们分别表示一级标题和二级标题。 第二种：在文字开头加上 “ ”，通过“ ”数量表示几级标题。（一共只有1 6级标题，1级标题字体最大） 通过在文字开头添加“ ”表示块注释。（当 和文字之间添"
-tags:
-  - "markdown"
+tags: ["markdown"]
 created: "2016-03-23"
 updated: "2016-03-23"
 ---

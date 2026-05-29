@@ -2,8 +2,7 @@
 title: "hexo常用命令笔记"
 slug: "hexo-order"
 description: "hexo n == hexo new hexo p == hexo publish hexo g == hexo generate hexo s == hexo server hexo d == hexo deploy hexo server Hexo 会监视文件变动并自动更新，"
-tags:
-  - "hexo"
+tags: ["hexo"]
 created: "2016-04-14"
 updated: "2016-04-14"
 ---

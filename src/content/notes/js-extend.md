@@ -2,8 +2,7 @@
 title: "jQuery插件的基本格式写法"
 slug: "js-extend"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-09-27"
 updated: "2016-09-27"
 ---

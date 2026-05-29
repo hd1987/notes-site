@@ -2,8 +2,7 @@
 title: "brew切换php版本"
 slug: "brew-link-php-version"
 description: ""
-tags:
-  - "brew"
+tags: ["brew"]
 created: "2024-05-07"
 updated: "2024-05-07"
 ---

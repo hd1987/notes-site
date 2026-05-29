@@ -2,8 +2,7 @@
 title: "vagrant"
 slug: "vagrant"
 description: "commond | describe | $ vagrant init | 初始化 $ vagrant up | 启动虚拟机 $ vagrant halt | 关闭虚拟机 $ vagrant reload | 重启虚拟机 $ vagrant ssh | SSH 至虚拟机 $ va"
-tags:
-  - "vagrant"
+tags: ["vagrant"]
 created: "2017-08-10"
 updated: "2017-08-10"
 ---

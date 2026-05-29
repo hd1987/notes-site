@@ -2,8 +2,7 @@
 title: "JS Standard 代码规范"
 slug: "js-standard-style"
 description: "这是 JavaScript standard 代码规范的全文。 掌握本规范的最好方法是安装并在自己的代码中使用它。 使用两个空格 进行缩进。 eslint: indent 除需要转义的情况外， 字符串统一使用单引号 。 eslint: quotes 不要定义未使用的变量 。 es"
-tags:
-  - "js"
+tags: ["js"]
 created: "2018-08-08"
 updated: "2018-08-08"
 ---

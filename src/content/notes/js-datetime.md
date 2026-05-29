@@ -2,8 +2,7 @@
 title: "js显示本地时间年月日"
 slug: "js-datetime"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

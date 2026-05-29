@@ -2,8 +2,7 @@
 title: "Markdown 语法"
 slug: "markdown"
 description: "Markdown 的目標是實現「易讀易寫」。 不過最需要強調的便是它的可讀性。一份使用 Markdown 格式撰寫的文件應該可以直接以純文字發佈，並且看起來不會像是由許多標籤或是格式指令所構成。 Markdown 的語法有個主要的目的：用來作為一種網路內容的 寫作 用語言。 如果"
-tags:
-  - "markdown"
+tags: ["markdown"]
 created: "2016-04-14"
 updated: "2016-04-14"
 ---

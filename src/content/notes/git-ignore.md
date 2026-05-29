@@ -2,8 +2,7 @@
 title: "Git 忽略文件不加入版本控制"
 slug: "git-ignore"
 description: "其它过滤条件 ？ : 代表任意的一个字符 ＊ : 代表任意数目的字符 {!ab} : 必须不是此类型 {ab,bb,cx} : 代表ab,bb,cx中任一类型即可 [abc] : 代表a,b,c中任一字符即可 [ ^abc] : 代表必须不是a,b,c中任一字符 在用户目录下创建"
-tags:
-  - "git"
+tags: ["git"]
 created: "2018-05-28"
 updated: "2018-05-28"
 ---

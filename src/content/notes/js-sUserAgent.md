@@ -2,8 +2,7 @@
 title: "使用JS判断移动设备的终端类型"
 slug: "js-suseragent"
 description: "方法一 方法二"
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

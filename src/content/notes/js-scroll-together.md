@@ -2,8 +2,7 @@
 title: "两个div同步滑动（js, jquery）"
 slug: "js-scroll-together"
 description: "方法一.使用js（适用web和wap） 方法二.使用jquery（仅适用web）"
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

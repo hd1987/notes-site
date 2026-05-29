@@ -2,8 +2,7 @@
 title: "js链式取值（函数解析字符串）"
 slug: "js-value-chain"
 description: "开发中，链式取值是非常正常的操作，如： res.data.goods.list[0].price 有时候会出现错误： Uncaught TypeError: Cannot read property 'goods' of undefined 使用: var c = { a: { "
-tags:
-  - "js"
+tags: ["js"]
 created: "2018-10-15"
 updated: "2018-10-15"
 ---

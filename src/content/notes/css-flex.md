@@ -2,8 +2,7 @@
 title: "css3 flex弹性布局摘要"
 slug: "css-flex"
 description: "Flex是Flexible Box的缩写，意为”弹性布局”，用来为盒状模型提供最大的灵活性 设为Flex布局以后，子元素的 float 、 clear 和 vertical align 属性将失效 决定主轴的方向（即项目的排列方向） row （默认值）: 主轴为水平方向，起点在左"
-tags:
-  - "css"
+tags: ["css"]
 created: "2018-08-07"
 updated: "2018-08-07"
 ---

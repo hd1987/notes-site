@@ -2,8 +2,7 @@
 title: "php提取文字并去除html标记，超出省略号表示"
 slug: "php-cut-article"
 description: ""
-tags:
-  - "php"
+tags: ["php"]
 created: "2016-06-20"
 updated: "2016-06-20"
 ---

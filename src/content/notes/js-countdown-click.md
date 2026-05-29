@@ -2,8 +2,7 @@
 title: "点击倒计时countdown"
 slug: "js-countdown-click"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2017-05-09"
 updated: "2017-05-09"
 ---

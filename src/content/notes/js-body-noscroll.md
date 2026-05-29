@@ -2,8 +2,7 @@
 title: "当弹出popup悬浮层时，禁止body滚动"
 slug: "js-body-noscroll"
 description: "示例："
-tags:
-  - "js"
+tags: ["js"]
 created: "2017-01-14"
 updated: "2017-01-14"
 ---

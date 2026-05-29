@@ -2,9 +2,7 @@
 title: "CommandLineTools reinstall"
 slug: "terminal-xcode-select"
 description: ""
-tags:
-  - "terminal"
-  - "cli"
+tags: ["terminal", "cli"]
 created: "2021-08-11"
 updated: "2021-08-11"
 ---

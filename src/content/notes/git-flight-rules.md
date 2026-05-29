@@ -2,8 +2,7 @@
 title: "Git飞行规则(Flight Rules)"
 slug: "git-flight-rules"
 description: "如果你用 git commit a 提交了一次变化(changes)，而你又不确定到底这次提交了哪些内容。 你就可以用下面的命令显示当前 HEAD 上的最近一次的提交(commit): 或者 如果你的提交信息(commit message)写错了且这次提交(commit)还没有推"
-tags:
-  - "git"
+tags: ["git"]
 created: "2021-01-19"
 updated: "2021-01-19"
 ---

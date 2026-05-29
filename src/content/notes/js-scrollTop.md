@@ -2,8 +2,7 @@
 title: "div移动到顶部固定不变"
 slug: "js-scrolltop"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

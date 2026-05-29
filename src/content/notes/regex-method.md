@@ -2,8 +2,7 @@
 title: "Regular Expressions 正则表达式方法"
 slug: "regex-method"
 description: "RegExp 是正则表达式的构造函数。 使用构造函数创建正则表达式有多种写法： 它接受两个参数：第一个参数是匹配模式，可以是字符串也可以是正则表达式；第二个参数是修饰符。 如果第一个参数的正则表达式定义了修饰符，第二个参数又有值，则以第二个参数定义的修饰符为准，这是ES2015的"
-tags:
-  - "regex"
+tags: ["regex"]
 created: "2022-02-05"
 updated: "2022-02-05"
 ---

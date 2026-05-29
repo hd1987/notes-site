@@ -2,9 +2,7 @@
 title: "vim cheatsheet"
 slug: "vim-cheatsheet"
 description: "vim: set ts=4 sw=4 tw=0 noet noautoindent fdm=manual :"
-tags:
-  - "vim"
-  - "cli"
+tags: ["vim", "cli"]
 created: "2020-08-13"
 updated: "2020-08-13"
 ---

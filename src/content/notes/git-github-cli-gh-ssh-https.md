@@ -2,8 +2,7 @@
 title: "GitHub 多账号混用方案总结（SSH + HTTPS）"
 slug: "git-github-cli-gh-ssh-https"
 description: "一台设备使用两个 GitHub 账号： 1. 账号 A（个人）： 纯 SSH 方式 ，不依赖 GitHub CLI \\(gh\\) 2. 账号 B（工作 / 其他）： 纯 HTTPS 方式 ，由 gh 管理登录与凭据 两套认证完全隔离，不会串账号、权限混乱 无需频繁执行账号切换命令"
-tags:
-  - "git"
+tags: ["git"]
 created: "2026-05-28"
 updated: "2026-05-28"
 ---

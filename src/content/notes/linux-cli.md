@@ -2,9 +2,7 @@
 title: "linux常用命令"
 slug: "linux-cli"
 description: ""
-tags:
-  - "linux"
-  - "cli"
+tags: ["linux", "cli"]
 created: "2017-06-12"
 updated: "2017-06-12"
 ---

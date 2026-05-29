@@ -2,8 +2,7 @@
 title: "jquery天时分秒倒计时"
 slug: "js-countdown-time"
 description: "html js"
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

@@ -2,8 +2,7 @@
 title: "Regular Expressions 正则表达式语法"
 slug: "regex-grammar"
 description: "什么叫普通字符？ 当我们写 a 的时候，我们指的就是 a ；当我们写 爱 的时候，我们指的就是 爱 。 这就是普通字符，它在正则中的含义就是检索它本身。除了正则规定的部分字符外，其余的都是普通字符，包括各种人类语言，包括emoji，只要能够表达为字符串。 ^ 字符的英文是 car"
-tags:
-  - "regex"
+tags: ["regex"]
 created: "2022-02-05"
 updated: "2022-02-05"
 ---

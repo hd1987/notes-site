@@ -2,8 +2,7 @@
 title: "homebrew依赖关系"
 slug: "brew-dependencies"
 description: ""
-tags:
-  - "brew"
+tags: ["brew"]
 created: "2023-04-07"
 updated: "2023-04-07"
 ---

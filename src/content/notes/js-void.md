@@ -2,8 +2,7 @@
 title: "js a链接不跳转"
 slug: "js-void"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

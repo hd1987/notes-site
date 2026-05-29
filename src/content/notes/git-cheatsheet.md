@@ -2,8 +2,7 @@
 title: "git cheatsheet 中文速查表 (2019/09/16)"
 slug: "git-cheatsheet"
 description: ""
-tags:
-  - "git"
+tags: ["git"]
 created: "2020-05-25"
 updated: "2020-05-25"
 ---

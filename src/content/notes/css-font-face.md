@@ -2,9 +2,7 @@
 title: "自定义字体 @font-face"
 slug: "css-font-face"
 description: ""
-tags:
-  - "css"
-  - "sass"
+tags: ["css", "sass"]
 created: "2017-04-28"
 updated: "2017-04-28"
 ---

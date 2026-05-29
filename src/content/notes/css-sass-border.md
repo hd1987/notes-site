@@ -2,9 +2,7 @@
 title: "sass - Retinal屏border显示1px"
 slug: "css-sass-border"
 description: ""
-tags:
-  - "css"
-  - "sass"
+tags: ["css", "sass"]
 created: "2016-12-06"
 updated: "2016-12-06"
 ---

@@ -2,8 +2,7 @@
 title: "php发出http(post,get)请求"
 slug: "php-http"
 description: "web service model很多时候需要使用别的web service来建造自己的web service，这就需要到使用服务器端进行请求http操作，post或者get请求。 以上是发送请求的函数，具体操作如下："
-tags:
-  - "php"
+tags: ["php"]
 created: "2016-07-23"
 updated: "2016-07-23"
 ---

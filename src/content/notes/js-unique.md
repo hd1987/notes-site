@@ -2,8 +2,7 @@
 title: "js数组去重的方法"
 slug: "js-unique"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2018-10-22"
 updated: "2018-10-22"
 ---

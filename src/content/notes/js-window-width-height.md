@@ -2,8 +2,7 @@
 title: "Javascript、Jquery获取浏览器和屏幕各种高度宽度"
 slug: "js-window-width-height"
 description: "Javascript: Jquery:"
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-10-31"
 updated: "2016-10-31"
 ---

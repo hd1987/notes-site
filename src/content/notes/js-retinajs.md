@@ -2,9 +2,7 @@
 title: "retinajs使用摘要"
 slug: "js-retinajs"
 description: "官方文档：retinajs 注：需要准备的图片名称格式 image.png image@2x.png image@3x.png 现在有4种实现方式： 1. 自动交换“img”标签的\"src\"路径。 2. 在内联样式中自动交换背景图像的网址。 3. 手动指定一个高分辨率的图像不同位"
-tags:
-  - "js"
-  - "retina"
+tags: ["js", "retina"]
 created: "2016-10-04"
 updated: "2016-10-04"
 ---

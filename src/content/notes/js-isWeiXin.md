@@ -2,8 +2,7 @@
 title: "判断是否是微信内置浏览器"
 slug: "js-isweixin"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

@@ -2,9 +2,7 @@
 title: "微信H5自定义分享在ios下失效的问题"
 slug: "js-wechat-share-ios"
 description: "ios分享失效，表现为不显示缩略图，自定义url不正确，无法获取title等 IOS：每次切换路由，SPA的url是不会变的，发起签名请求的url参数必须是当前页面的url(就是最初进入页面时的url) Android：每次切换路由，SPA的url是会变的，发起签名请求的url参"
-tags:
-  - "wechat"
-  - "ios"
+tags: ["wechat", "ios"]
 created: "2022-06-06"
 updated: "2022-06-06"
 ---

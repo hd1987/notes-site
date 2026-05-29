@@ -2,8 +2,7 @@
 title: "js Math取整，小数点保留后几位"
 slug: "js-math"
 description: "js Math取整，小数点保留后几位"
-tags:
-  - "js"
+tags: ["js"]
 created: "2022-12-16"
 updated: "2022-12-16"
 ---

@@ -2,8 +2,7 @@
 title: "html5默认提示文字placeholder更改颜色"
 slug: "css-placeholder"
 description: ""
-tags:
-  - "css"
+tags: ["css"]
 created: "2016-03-24"
 updated: "2016-03-24"
 ---

@@ -2,8 +2,7 @@
 title: "fastclick.js插件使用简单说明"
 slug: "js-fastclickjs"
 description: "资源下载：fastclick.js 从点击屏幕上的元素到触发元素的 click 事件，移动浏览器会有大约 300 毫秒的等待时间。为什么这么设计呢？ 因为它想看看你是不是要进行双击（double tap）操作。 1.在HTML页面中添加 注：必须在页面所有Element之前加载脚"
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-08-16"
 updated: "2016-08-16"
 ---

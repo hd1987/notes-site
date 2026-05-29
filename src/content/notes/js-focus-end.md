@@ -2,8 +2,7 @@
 title: "js focus end"
 slug: "js-focus-end"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2018-10-16"
 updated: "2018-10-16"
 ---

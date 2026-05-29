@@ -2,8 +2,7 @@
 title: "jquery倒计时页面跳转"
 slug: "js-countdown-href"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

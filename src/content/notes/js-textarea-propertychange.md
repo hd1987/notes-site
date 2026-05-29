@@ -2,8 +2,7 @@
 title: "监听textarea的值的变化\"propertychange"
 slug: "js-textarea-propertychange"
 description: "js示例 jquery示例"
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

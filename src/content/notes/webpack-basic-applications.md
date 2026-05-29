@@ -2,9 +2,7 @@
 title: "webpack4 基本设置应用示例 (Nodejs -v10)"
 slug: "webpack-basic-applications"
 description: "dist node modules src package.json webpack.config.js webpack.config.entry.js（把需要编译的多个js入口单独写配置文件） npm install 安装命令（每个项目仅需执行一次） npm run scrip"
-tags:
-  - "npm"
-  - "webpack"
+tags: ["npm", "webpack"]
 created: "2018-05-31"
 updated: "2018-05-31"
 ---

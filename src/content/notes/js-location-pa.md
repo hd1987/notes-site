@@ -2,8 +2,7 @@
 title: "jquery判断地址栏是否存在某参数"
 slug: "js-location-pa"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

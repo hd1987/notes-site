@@ -2,8 +2,7 @@
 title: "jquery实现返回顶部"
 slug: "js-backtop"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

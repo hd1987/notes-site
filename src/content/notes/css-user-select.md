@@ -2,8 +2,7 @@
 title: "禁止复制、选中文本"
 slug: "css-user-select"
 description: ""
-tags:
-  - "css"
+tags: ["css"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

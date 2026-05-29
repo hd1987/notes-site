@@ -2,8 +2,7 @@
 title: "JS历史返回代码"
 slug: "js-history"
 description: ""
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---

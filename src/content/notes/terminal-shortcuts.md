@@ -2,9 +2,7 @@
 title: "Terminal 几个快捷键"
 slug: "terminal-shortcuts"
 description: "ctrl + a ctrl + e ctrl + l ctrl + r ctrl + u ctrl + k option + 方向键"
-tags:
-  - "terminal"
-  - "cli"
+tags: ["terminal", "cli"]
 created: "2017-08-11"
 updated: "2017-08-11"
 ---

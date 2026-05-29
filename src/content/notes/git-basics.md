@@ -2,8 +2,7 @@
 title: "Git基础"
 slug: "git-basics"
 description: ".gitignore 文件指定了 Git 应该忽略的故意未跟踪的文件"
-tags:
-  - "git"
+tags: ["git"]
 created: "2023-07-27"
 updated: "2023-07-27"
 ---

@@ -2,8 +2,7 @@
 title: "vue实现点击空白关闭弹窗，模拟下拉框Dropdown"
 slug: "vue-dropdown"
 description: "方法一: 给外层容器定义一个阻止冒泡事件 @click.stop ，则该容器内的点击不会传递到外层容器，所以全局监听不到该点击事件，在该容器内部点击不会触发点击函数。当弹框出现时，点击外部空白区域，弹框关闭。 方法二: 给外层容器设置一个 ref=\"mian\" ，当 visibl"
-tags:
-  - "vue"
+tags: ["vue"]
 created: "2022-12-20"
 updated: "2022-12-20"
 ---

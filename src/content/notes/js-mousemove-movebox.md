@@ -2,8 +2,7 @@
 title: "跟随鼠标移动的悬浮提示框案例"
 slug: "js-mousemove-movebox"
 description: "js部分 html部分"
-tags:
-  - "js"
+tags: ["js"]
 created: "2016-03-25"
 updated: "2016-03-25"
 ---
