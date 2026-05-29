@@ -36,5 +36,5 @@ npm run build
 
 ## Deployment
 
-The site is configured for GitHub Pages with `base: "/notes-site/"`.
+The site is configured for GitHub Pages with the custom domain `notes.adihuang.com` and `base: "/"`.
 Do not push or deploy without explicit approval.

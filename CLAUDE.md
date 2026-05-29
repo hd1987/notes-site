@@ -43,7 +43,8 @@
 
 - GitHub Pages deployment lives in `.github/workflows/deploy.yml`.
 - Do not push without explicit user approval.
-- GitHub Pages uses `base: "/notes-site/"` unless the repository name changes.
+- GitHub Pages uses the custom domain `notes.adihuang.com` with `base: "/"`.
+- Keep `public/CNAME` in sync with the custom domain.
 
 ## Verification
 
