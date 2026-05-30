@@ -15,12 +15,27 @@ describe("openMobileSearchSidebar", () => {
     expect(shell.classList.contains("is-sidebar-open")).toBe(true);
   });
 
-  it("keeps the desktop sidebar state unchanged", () => {
+  it("keeps the desktop drawer state unchanged", () => {
     const shell = createShell();
 
     openMobileSearchSidebar(shell, false);
 
     expect(shell.classList.contains("is-sidebar-open")).toBe(false);
+  });
+
+  it.each([true, false])("switches the sidebar back to the articles tab when isMobile is %s", (isMobile) => {
+    const shell = createShell();
+    const articlesButton = createSidebarItem("data-tab-button", "articles", false);
+    const outlineButton = createSidebarItem("data-tab-button", "outline", true);
+    const articlesPanel = createSidebarItem("data-tab-panel", "articles", false);
+    const outlinePanel = createSidebarItem("data-tab-panel", "outline", true);
+
+    openMobileSearchSidebar(shell, isMobile, [articlesButton, outlineButton], [articlesPanel, outlinePanel]);
+
+    expect(articlesButton.classList.contains("is-active")).toBe(true);
+    expect(outlineButton.classList.contains("is-active")).toBe(false);
+    expect(articlesPanel.classList.contains("is-active")).toBe(true);
+    expect(outlinePanel.classList.contains("is-active")).toBe(false);
   });
 });
 
@@ -51,4 +66,19 @@ function createShell() {
       contains: (className: string) => classes.has(className),
     },
   } as unknown as HTMLElement;
+}
+
+function createSidebarItem(attribute: string, value: string, isActive: boolean) {
+  const classes = new Set<string>(isActive ? ["is-active"] : []);
+
+  return {
+    classList: {
+      contains: (className: string) => classes.has(className),
+      toggle: (className: string, force: boolean) => {
+        if (force) classes.add(className);
+        else classes.delete(className);
+      },
+    },
+    getAttribute: (name: string) => (name === attribute ? value : null),
+  } as unknown as Element;
 }

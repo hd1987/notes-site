@@ -70,4 +70,15 @@ describe("note records", () => {
     expect(record.slug).toBe("folder/untitled-note");
     expect(record.url).toBe("/notes/folder/untitled-note/");
   });
+
+  it("rejects explicit slugs that normalize to an empty value", () => {
+    expect(() =>
+      buildNoteRecords([
+        {
+          id: "empty-slug.md",
+          data: { slug: "---" },
+        },
+      ]),
+    ).toThrow("Invalid note slug");
+  });
 });

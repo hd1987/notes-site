@@ -33,6 +33,10 @@ export function buildNoteRecords(entries: NoteEntryLike[]): NoteRecord[] {
     const filePath = entry.filePath ?? entry.id;
     const title = resolveTitle(entry);
 
+    if (!slug) {
+      throw new Error(`Invalid note slug in ${filePath}`);
+    }
+
     return {
       id: entry.id,
       filePath,
