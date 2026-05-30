@@ -19,6 +19,9 @@ function formatDate(date: Date | undefined) {
     notes.map((note) => (
       <a
         class:list={["article-link", { "is-active": note.slug === currentSlug }]}
+        data-article-id={note.slug}
+        data-article-link
+        data-article-tags={JSON.stringify(note.tags)}
         href={withBasePath(note.url)}
       >
         <span class="article-meta">

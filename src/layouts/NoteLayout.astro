@@ -1,7 +1,6 @@
 ---
 import ArticleList from "../components/ArticleList.astro";
 import ArticleOutline from "../components/ArticleOutline.astro";
-import SearchPanel from "../components/SearchPanel.astro";
 import TopBar from "../components/TopBar.astro";
 import "../styles/global.css";
 import type { NoteRecord } from "../lib/notes";
@@ -36,7 +35,6 @@ function formatDate(date: Date | undefined) {
         <div class="sidebar-tabs" role="tablist" aria-label="Sidebar views">
           <button class="sidebar-tab is-active" type="button" data-tab-button="articles">Articles</button>
           <button class="sidebar-tab" type="button" data-tab-button="outline">Outline</button>
-          <button class="sidebar-tab" type="button" data-tab-button="search">Search</button>
         </div>
 
         <section class="sidebar-panel is-active" data-tab-panel="articles">
@@ -44,9 +42,6 @@ function formatDate(date: Date | undefined) {
         </section>
         <section class="sidebar-panel" data-tab-panel="outline">
           <ArticleOutline headings={headings} />
-        </section>
-        <section class="sidebar-panel" data-tab-panel="search">
-          <SearchPanel />
         </section>
       </aside>
 

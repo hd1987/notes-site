@@ -1,16 +1,19 @@
-<section class="search-panel" aria-label="Search">
-  <label class="search-box">
-    <span class="sr-only">Search notes</span>
-    <input data-search-input type="search" placeholder="Search notes" autocomplete="off" />
+<div class="header-search" aria-label="Search">
+  <label class="header-search-box">
+    <span class="sr-only">Search notes by tag</span>
+    <input data-search-input type="search" placeholder="Enter keywords" autocomplete="off" />
   </label>
-  <div data-search-status class="search-status">Type to search</div>
-  <div data-search-results class="search-results"></div>
-</section>
+  <div class="search-popover" data-search-popover>
+    <div data-search-status class="search-status">Select a tag</div>
+    <div data-search-results class="search-results"></div>
+  </div>
+</div>
 
 <script>
   import MiniSearch from "minisearch";
+  import { articleMatchesSearchFilter } from "../lib/article-search-filter";
   import { collectSearchTags } from "../lib/search-tags";
-  import { tokenizeSearchText } from "../lib/search-tokenize";
+  import { buildSearchQuery, searchOptions, tokenizeSearchText } from "../lib/search-tokenize";
 
   const input = document.querySelector("[data-search-input]");
   const resultsContainer = document.querySelector("[data-search-results]");
@@ -22,61 +25,48 @@
     const searchStatus = status;
     const response = await fetch(`${import.meta.env.BASE_URL}search-index.json`);
     const documents = await response.json();
+    const tags = collectSearchTags(documents);
     const search = new MiniSearch({
       fields: ["title", "description", "tags", "body"],
       storeFields: ["title", "description", "url", "filePath", "body"],
       tokenize: tokenizeSearchText,
-      searchOptions: {
-        boost: { title: 3, tags: 2 },
-        fuzzy: 0.2,
-        prefix: true,
-      },
+      searchOptions,
     });
+    let selectedTag = "";
 
     search.addAll(documents);
-    const tags = collectSearchTags(documents);
 
-    searchInput.addEventListener("input", renderSearchState);
-    renderSearchState();
+    renderTags(tags);
+    filterArticles();
 
-    function renderSearchState() {
-      const query = searchInput.value.trim();
-      searchResults.replaceChildren();
+    searchInput.addEventListener("input", () => {
+      selectedTag = "";
+      filterArticles();
+    });
 
-      if (!query) {
-        searchStatus.textContent = tags.length ? "Filter by tag" : "Type to search";
-        renderTags(tags);
-        return;
+    function filterArticles() {
+      const filter = searchInput.value;
+      const links = document.querySelectorAll("[data-article-link]");
+      const query = buildSearchQuery(filter);
+      const resultIds = new Set(search.search(query).map((result) => String(result.id)));
+      let visibleCount = 0;
+
+      for (const link of links) {
+        const tags = JSON.parse(link.getAttribute("data-article-tags") ?? "[]");
+        const id = link.getAttribute("data-article-id") ?? "";
+        const isVisible =
+          Array.isArray(tags) && articleMatchesSearchFilter({ id, tags }, filter, resultIds, selectedTag);
+        if (link instanceof HTMLElement) {
+          link.hidden = !isVisible;
+        }
+        if (isVisible) visibleCount += 1;
       }
 
-      const results = search.search(query).slice(0, 20);
-      searchStatus.textContent = `${results.length} result${results.length === 1 ? "" : "s"}`;
-
-      for (const result of results) {
-        const link = document.createElement("a");
-        link.className = "search-result";
-        link.href = String(result.url);
-
-        const title = document.createElement("span");
-        title.className = "search-result-title";
-        title.textContent = String(result.title);
-
-        const file = document.createElement("span");
-        file.className = "search-result-file";
-        file.textContent = String(result.filePath);
-
-        const snippet = document.createElement("span");
-        snippet.className = "search-result-snippet";
-        snippet.textContent = makeSnippet(String(result.description || result.body), query);
-
-        link.append(title, file, snippet);
-        searchResults.append(link);
-      }
+      searchStatus.textContent = filter.trim() ? `${visibleCount} article${visibleCount === 1 ? "" : "s"}` : "Select a tag";
     }
 
     function renderTags(tagList: string[]) {
-      const list = document.createElement("div");
-      list.className = "search-tag-list";
+      searchResults.replaceChildren();
 
       for (const tag of tagList) {
         const button = document.createElement("button");
@@ -84,20 +74,13 @@
         button.type = "button";
         button.textContent = tag;
         button.addEventListener("click", () => {
+          selectedTag = tag;
           searchInput.value = tag;
-          renderSearchState();
+          filterArticles();
+          searchInput.focus();
         });
-        list.append(button);
+        searchResults.append(button);
       }
-
-      searchResults.append(list);
     }
-  }
-
-  function makeSnippet(text: string, query: string) {
-    const clean = text.replace(/\s+/g, " ").trim();
-    const index = clean.toLowerCase().indexOf(query.toLowerCase());
-    if (index < 0) return clean.slice(0, 150);
-    return clean.slice(Math.max(0, index - 50), index + 100);
   }
 </script>
