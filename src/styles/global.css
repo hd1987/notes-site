@@ -106,7 +106,6 @@ input {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  display: none;
   width: 100%;
   max-height: min(360px, calc(100vh - 80px));
   overflow: auto;
@@ -117,8 +116,8 @@ input {
   padding: 10px;
 }
 
-.header-search:focus-within .search-popover {
-  display: block;
+.search-popover[hidden] {
+  display: none;
 }
 
 .icon-button {
@@ -454,15 +453,16 @@ input {
 
   .top-bar {
     display: flex;
+    z-index: 40;
   }
 
   .top-title {
-    flex: 0 1 auto;
-    font-size: 16px;
+    display: none;
   }
 
   .header-search {
     flex: 1 1 auto;
+    min-width: 0;
   }
 
   .icon-button {

@@ -138,12 +138,12 @@ URL slug 规则：
 - 正文阅读区取消最大宽度，宽度占满右侧可用空间
 - 正文阅读区外边距保持紧凑
 - 顶部固定显示站点标题 `AdiHuang's notes`
+- 顶部中间显示 Search input
 
-左侧栏包含三种状态：
+左侧栏包含两种状态：
 
 - `Articles`：文章列表
 - `Outline`：当前文章目录
-- `Search`：搜索结果
 
 左侧文章列表：
 
@@ -169,7 +169,10 @@ URL slug 规则：
 
 - 左侧栏收起为抽屉
 - 正文宽度自适应
-- 顶部保留菜单按钮和站点标题
+- 顶部隐藏站点标题
+- 顶部保留菜单按钮和 Search input
+- Search input 获得焦点时自动打开 Articles 抽屉
+- Search input 为空时显示 tags 悬浮框，有值时隐藏 tags 悬浮框
 
 ## 第一版功能
 
@@ -186,8 +189,8 @@ URL slug 规则：
 - 全文搜索文章标题、摘要、正文和标签
 - 搜索支持中文中间词命中，例如 `Git基础` 可通过 `基础` 命中
 - Search input 为空时显示全部 tags
-- 点击 tag 后将 tag 写入 Search input 并执行 tag 搜索
-- 搜索结果显示标题、片段和所属文件
+- 点击 tag 后将 tag 写入 Search input 并筛选 Articles
+- 输入关键词后按搜索结果筛选 Articles
 - Markdown 渲染支持标题、列表、表格、引用、代码块、任务列表
 - GitHub Actions 自动构建并发布到 GitHub Pages
 
@@ -229,12 +232,14 @@ import.meta.env.BASE_URL + "search-index.json"
 
 搜索行为：
 
-- 用户输入关键词后左侧栏切换到 `Search`
-- Search input 为空时显示去重并排序后的全部 tags
-- 点击 tag 后填入 Search input，并立即执行搜索
+- Search input 固定在 Header 中间
+- Search input 获得焦点且内容为空时，在下方悬浮框显示去重并排序后的全部 tags
+- Search input 有内容时隐藏 tags 悬浮框
+- 点击 tag 后填入 Search input，并按 tag 精确筛选 Articles
+- 输入关键词后按 MiniSearch 结果筛选 Articles
+- 清空 Search input 后恢复显示全部 Articles
+- 移动端 Search input 获得焦点时自动打开 Articles 抽屉
 - 搜索结果按相关度排序
-- 每条结果显示文章标题、命中片段和文件名
-- 点击结果跳转到对应文章
 
 中文搜索：
 
@@ -353,11 +358,14 @@ npm run preview
 - 搜索能命中文章正文
 - 搜索能命中文章标题中的中文中间词
 - Search input 为空时能显示全部 tags
-- 点击 tag 后能执行 tag 搜索
+- 点击 tag 后能按 tag 筛选 Articles
+- 输入关键词后能筛选 Articles
+- 清空 Search input 后能恢复全部 Articles
 - 代码块显示正常
 - 表格显示正常
 - 任务列表显示正常
 - 移动端没有明显遮挡
+- 移动端 Search input 获得焦点时能自动打开 Articles 抽屉
 
 GitHub Pages 验收：
 

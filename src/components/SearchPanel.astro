@@ -1,9 +1,9 @@
-<div class="header-search" aria-label="Search">
+<div class="header-search" aria-label="Search" data-header-search>
   <label class="header-search-box">
     <span class="sr-only">Search notes by tag</span>
     <input data-search-input type="search" placeholder="Enter keywords" autocomplete="off" />
   </label>
-  <div class="search-popover" data-search-popover>
+  <div class="search-popover" data-search-popover hidden>
     <div data-search-status class="search-status">Select a tag</div>
     <div data-search-results class="search-results"></div>
   </div>
@@ -12,15 +12,23 @@
 <script>
   import MiniSearch from "minisearch";
   import { articleMatchesSearchFilter } from "../lib/article-search-filter";
+  import { openMobileSearchSidebar, shouldShowSearchTags } from "../lib/mobile-search-sidebar";
   import { collectSearchTags } from "../lib/search-tags";
   import { buildSearchQuery, searchOptions, tokenizeSearchText } from "../lib/search-tokenize";
 
   const input = document.querySelector("[data-search-input]");
+  const popover = document.querySelector("[data-search-popover]");
   const resultsContainer = document.querySelector("[data-search-results]");
   const status = document.querySelector("[data-search-status]");
 
-  if (input instanceof HTMLInputElement && resultsContainer instanceof HTMLElement && status instanceof HTMLElement) {
+  if (
+    input instanceof HTMLInputElement &&
+    popover instanceof HTMLElement &&
+    resultsContainer instanceof HTMLElement &&
+    status instanceof HTMLElement
+  ) {
     const searchInput = input;
+    const searchPopover = popover;
     const searchResults = resultsContainer;
     const searchStatus = status;
     const response = await fetch(`${import.meta.env.BASE_URL}search-index.json`);
@@ -39,9 +47,15 @@
     renderTags(tags);
     filterArticles();
 
+    searchInput.addEventListener("focus", () => {
+      renderPopoverState();
+      openArticlesOnMobile();
+    });
+    searchInput.addEventListener("blur", renderPopoverState);
     searchInput.addEventListener("input", () => {
       selectedTag = "";
       filterArticles();
+      renderPopoverState();
     });
 
     function filterArticles() {
@@ -73,14 +87,27 @@
         button.className = "search-tag";
         button.type = "button";
         button.textContent = tag;
-        button.addEventListener("click", () => {
+        button.addEventListener("pointerdown", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
           selectedTag = tag;
           searchInput.value = tag;
           filterArticles();
-          searchInput.focus();
+          renderPopoverState();
+          openArticlesOnMobile();
         });
         searchResults.append(button);
       }
+    }
+
+    function openArticlesOnMobile() {
+      const shell = document.querySelector("[data-shell]");
+      const isMobile = window.matchMedia("(max-width: 820px)").matches;
+      openMobileSearchSidebar(shell instanceof HTMLElement ? shell : null, isMobile);
+    }
+
+    function renderPopoverState() {
+      searchPopover.hidden = !shouldShowSearchTags(searchInput.value, document.activeElement === searchInput);
     }
   }
 </script>

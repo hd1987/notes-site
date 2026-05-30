@@ -79,6 +79,8 @@ function formatFilePath(filePath: string) {
     </div>
 
     <script>
+      import { shouldKeepMobileSidebarOpen } from "../lib/mobile-search-sidebar";
+
       const shell = document.querySelector("[data-shell]");
       const tabButtons = document.querySelectorAll("[data-tab-button]");
       const tabPanels = document.querySelectorAll("[data-tab-panel]");
@@ -97,9 +99,9 @@ function formatFilePath(filePath: string) {
         });
       }
 
-      document.addEventListener("click", (event) => {
+      document.addEventListener("pointerdown", (event) => {
         if (!(event.target instanceof Element)) return;
-        if (event.target.closest("[data-sidebar], [data-menu-button]")) return;
+        if (shouldKeepMobileSidebarOpen(event.target)) return;
         shell?.classList.remove("is-sidebar-open");
       });
 
