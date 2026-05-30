@@ -18,6 +18,10 @@ const pageTitle = currentNote ? `${currentNote.title} - notes-site` : "notes-sit
 function formatDate(date: Date | undefined) {
   return date ? date.toISOString().slice(0, 10) : "";
 }
+
+function formatFilePath(filePath: string) {
+  return filePath.replace(/^src\/content\/notes\//, "");
+}
 ---
 
 <!doctype html>
@@ -51,7 +55,7 @@ function formatDate(date: Date | undefined) {
             <article class="note-article">
               <div class="note-header">
                 <p class="note-file">
-                  <span>{currentNote.filePath}</span>
+                  <span>{formatFilePath(currentNote.filePath)}</span>
                   {formatDate(currentNote.created) && (
                     <time datetime={formatDate(currentNote.created)}>created {formatDate(currentNote.created)}</time>
                   )}
