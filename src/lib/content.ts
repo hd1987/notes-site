@@ -1,7 +1,11 @@
 import { getCollection } from "astro:content";
-import { buildNoteRecords, sortNoteRecords, type NoteRecord } from "./notes";
+import { buildNoteRecords, sortNoteRecords } from "./notes";
 
-export async function getNoteRecords(): Promise<NoteRecord[]> {
+export async function getNoteContent() {
   const entries = await getCollection("notes");
-  return sortNoteRecords(buildNoteRecords(entries));
+  return { entries, notes: sortNoteRecords(buildNoteRecords(entries)) };
+}
+
+export async function getNoteRecords() {
+  return (await getNoteContent()).notes;
 }

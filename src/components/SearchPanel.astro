@@ -1,99 +1,137 @@
 <div class="header-search" aria-label="Search" data-header-search>
   <label class="header-search-box">
-    <span class="sr-only">Search notes by tag</span>
-    <input data-search-input type="search" placeholder="Enter keywords" autocomplete="off" />
+    <span class="sr-only">Search notes</span>
+    <input data-search-input type="search" placeholder="Enter keywords" autocomplete="off" aria-describedby="search-status" />
   </label>
   <div class="search-popover" data-search-popover hidden>
-    <div data-search-status class="search-status">Select a tag</div>
+    <div id="search-status" data-search-status class="search-status" role="status" aria-live="polite"></div>
+    <button type="button" data-search-retry hidden>Retry search</button>
     <div data-search-results class="search-results"></div>
   </div>
 </div>
 
 <script>
-  import MiniSearch from "minisearch";
   import { articleMatchesSearchFilter } from "../lib/article-search-filter";
-  import { openMobileSearchSidebar, shouldShowSearchTags } from "../lib/mobile-search-sidebar";
+  import { openMobileSearchSidebar } from "../lib/mobile-search-sidebar";
   import { collectSearchTags } from "../lib/search-tags";
   import { buildSearchQuery, searchOptions, tokenizeSearchText } from "../lib/search-tokenize";
+  import { createSearchLoader, validateSearchDocuments } from "../lib/search-loader";
 
-  const input = document.querySelector("[data-search-input]");
-  const popover = document.querySelector("[data-search-popover]");
-  const resultsContainer = document.querySelector("[data-search-results]");
-  const status = document.querySelector("[data-search-status]");
+  const root = document.querySelector<HTMLElement>("[data-header-search]");
+  const input = root?.querySelector<HTMLInputElement>("[data-search-input]");
+  const popover = root?.querySelector<HTMLElement>("[data-search-popover]");
+  const results = root?.querySelector<HTMLElement>("[data-search-results]");
+  const status = root?.querySelector<HTMLElement>("[data-search-status]");
+  const retry = root?.querySelector<HTMLButtonElement>("[data-search-retry]");
 
-  if (
-    input instanceof HTMLInputElement &&
-    popover instanceof HTMLElement &&
-    resultsContainer instanceof HTMLElement &&
-    status instanceof HTMLElement
-  ) {
-    const searchInput = input;
-    const searchPopover = popover;
-    const searchResults = resultsContainer;
-    const searchStatus = status;
-    const response = await fetch(`${import.meta.env.BASE_URL}search-index.json`);
-    const documents = await response.json();
-    const tags = collectSearchTags(documents);
-    const search = new MiniSearch({
-      fields: ["title", "description", "tags", "body"],
-      storeFields: ["title", "description", "url", "filePath", "body"],
-      tokenize: tokenizeSearchText,
-      searchOptions,
-    });
+  if (root && input && popover && results && status && retry) {
+    const searchRoot = root, searchInput = input, searchPopover = popover;
+    const searchResults = results, searchStatus = status, retryButton = retry;
+    let state: "idle" | "loading" | "ready" | "error" = "idle";
+    let search: import("minisearch").default | undefined;
     let selectedTag = "";
+    let dismissed = false;
+    const load = createSearchLoader(async () => {
+      const [module, response] = await Promise.all([
+        import("minisearch"),
+        fetch(`${import.meta.env.BASE_URL}search-index.json`),
+      ]);
+      if (!response.ok) throw new Error(`Search index failed: ${response.status}`);
+      const documents = validateSearchDocuments(await response.json());
+      const index = new module.default({
+        fields: ["title", "description", "tags", "body"],
+        tokenize: tokenizeSearchText,
+        searchOptions,
+      });
+      index.addAll(documents);
+      return { index, tags: collectSearchTags(documents) };
+    });
 
-    search.addAll(documents);
-
-    renderTags(tags);
-    filterArticles();
+    async function initialize() {
+      if (state === "ready" || state === "loading") return;
+      state = "loading";
+      searchStatus.textContent = "Loading search…";
+      if (document.activeElement === retryButton) searchInput.focus();
+      retryButton.hidden = true;
+      renderPopover();
+      try {
+        const loaded = await load();
+        search = loaded.index;
+        renderTags(loaded.tags);
+        state = "ready";
+        filterArticles();
+      } catch {
+        state = "error";
+        searchStatus.textContent = "Search temporarily unavailable";
+        retryButton.hidden = false;
+        restoreArticles();
+      }
+      renderPopover();
+    }
 
     searchInput.addEventListener("focus", () => {
-      renderPopoverState();
+      dismissed = false;
+      if (state === "idle") void initialize();
+      renderPopover();
     });
-    searchInput.addEventListener("blur", renderPopoverState);
     searchInput.addEventListener("input", () => {
+      dismissed = false;
       selectedTag = "";
-      filterArticles();
-      renderPopoverState();
+      if (state === "idle") void initialize();
+      if (state === "ready") filterArticles();
+      renderPopover();
       showArticles();
     });
+    retryButton.addEventListener("click", () => { void initialize(); });
+    searchRoot.addEventListener("focusin", renderPopover);
+    searchRoot.addEventListener("focusout", (event) => {
+      if (!(event.relatedTarget instanceof Node) || !searchRoot.contains(event.relatedTarget)) {
+        searchPopover.hidden = true;
+      }
+    });
+    searchRoot.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      searchInput.focus();
+      dismissed = true;
+      renderPopover();
+    });
+
+    function restoreArticles() {
+      for (const link of document.querySelectorAll<HTMLElement>("[data-article-link]")) link.hidden = false;
+    }
 
     function filterArticles() {
+      if (!search) return;
       const filter = searchInput.value;
-      const links = document.querySelectorAll("[data-article-link]");
       const query = buildSearchQuery(filter);
       const resultIds = new Set(search.search(query).map((result) => String(result.id)));
       let visibleCount = 0;
-
-      for (const link of links) {
+      for (const link of document.querySelectorAll<HTMLElement>("[data-article-link]")) {
         const tags = JSON.parse(link.getAttribute("data-article-tags") ?? "[]");
         const id = link.getAttribute("data-article-id") ?? "";
-        const isVisible =
-          Array.isArray(tags) && articleMatchesSearchFilter({ id, tags }, filter, resultIds, selectedTag);
-        if (link instanceof HTMLElement) {
-          link.hidden = !isVisible;
-        }
-        if (isVisible) visibleCount += 1;
+        const visible = Array.isArray(tags) && articleMatchesSearchFilter({ id, tags }, filter, resultIds, selectedTag);
+        link.hidden = !visible;
+        if (visible) visibleCount += 1;
       }
-
-      searchStatus.textContent = filter.trim() ? `${visibleCount} article${visibleCount === 1 ? "" : "s"}` : "Select a tag";
+      searchStatus.textContent = !filter.trim() ? "Select a tag"
+        : visibleCount ? `${visibleCount} article${visibleCount === 1 ? "" : "s"}`
+        : `No notes found for “${filter}”`;
     }
 
-    function renderTags(tagList: string[]) {
+    function renderTags(tags: string[]) {
       searchResults.replaceChildren();
-
-      for (const tag of tagList) {
+      for (const tag of tags) {
         const button = document.createElement("button");
         button.className = "search-tag";
         button.type = "button";
         button.textContent = tag;
-        button.addEventListener("pointerdown", (event) => {
-          event.preventDefault();
-          event.stopPropagation();
+        button.addEventListener("click", () => {
           selectedTag = tag;
           searchInput.value = tag;
+          searchInput.focus();
           filterArticles();
-          renderPopoverState();
+          renderPopover();
           showArticles();
         });
         searchResults.append(button);
@@ -102,14 +140,14 @@
 
     function showArticles() {
       const shell = document.querySelector("[data-shell]");
-      const isMobile = window.matchMedia("(max-width: 820px)").matches;
-      const tabButtons = document.querySelectorAll("[data-tab-button]");
-      const tabPanels = document.querySelectorAll("[data-tab-panel]");
-      openMobileSearchSidebar(shell instanceof HTMLElement ? shell : null, isMobile, tabButtons, tabPanels);
+      openMobileSearchSidebar(shell instanceof HTMLElement ? shell : null,
+        window.matchMedia("(max-width: 820px)").matches,
+        document.querySelectorAll("[data-tab-button]"), document.querySelectorAll("[data-tab-panel]"));
     }
 
-    function renderPopoverState() {
-      searchPopover.hidden = !shouldShowSearchTags(searchInput.value, document.activeElement === searchInput);
+    function renderPopover() {
+      searchPopover.hidden = dismissed || !searchRoot.contains(document.activeElement) || state === "idle";
+      searchResults.hidden = state !== "ready" || Boolean(searchInput.value.trim());
     }
   }
 </script>

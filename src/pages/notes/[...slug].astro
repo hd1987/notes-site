@@ -1,11 +1,11 @@
 ---
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
 import NoteLayout from "../../layouts/NoteLayout.astro";
-import { buildNoteRecords, findNoteBySlug, sortNoteRecords } from "../../lib/notes";
+import { getNoteContent } from "../../lib/content";
+import { findNoteBySlug } from "../../lib/notes";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("notes");
-  const notes = sortNoteRecords(buildNoteRecords(entries));
+  const { notes } = await getNoteContent();
 
   return notes.map((note) => ({
     params: { slug: note.slug },
@@ -13,8 +13,7 @@ export async function getStaticPaths() {
   }));
 }
 
-const entries = await getCollection("notes");
-const notes = sortNoteRecords(buildNoteRecords(entries));
+const { entries, notes } = await getNoteContent();
 const currentNote = findNoteBySlug(notes, Astro.params.slug ?? "");
 const currentEntry = entries.find((entry) => entry.id === Astro.props.noteId);
 const rendered = currentEntry ? await render(currentEntry) : undefined;

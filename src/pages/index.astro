@@ -1,10 +1,9 @@
 ---
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
 import NoteLayout from "../layouts/NoteLayout.astro";
-import { buildNoteRecords, sortNoteRecords } from "../lib/notes";
+import { getNoteContent } from "../lib/content";
 
-const entries = await getCollection("notes");
-const notes = sortNoteRecords(buildNoteRecords(entries));
+const { entries, notes } = await getNoteContent();
 const currentNote = notes[0];
 const currentEntry = currentNote ? entries.find((entry) => entry.id === currentNote.id) : undefined;
 const rendered = currentEntry ? await render(currentEntry) : undefined;

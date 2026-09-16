@@ -36,6 +36,10 @@ describe("openMobileSearchSidebar", () => {
     expect(outlineButton.classList.contains("is-active")).toBe(false);
     expect(articlesPanel.classList.contains("is-active")).toBe(true);
     expect(outlinePanel.classList.contains("is-active")).toBe(false);
+    expect(articlesButton.getAttribute("aria-selected")).toBe("true");
+    expect(outlineButton.getAttribute("tabindex")).toBe("-1");
+    expect(articlesPanel.getAttribute("hidden")).toBeNull();
+    expect(outlinePanel.getAttribute("hidden")).toBe("");
   });
 });
 
@@ -70,6 +74,7 @@ function createShell() {
 
 function createSidebarItem(attribute: string, value: string, isActive: boolean) {
   const classes = new Set<string>(isActive ? ["is-active"] : []);
+  const attributes = new Map<string, string>([[attribute, value]]);
 
   return {
     classList: {
@@ -79,6 +84,8 @@ function createSidebarItem(attribute: string, value: string, isActive: boolean) 
         else classes.delete(className);
       },
     },
-    getAttribute: (name: string) => (name === attribute ? value : null),
+    setAttribute: (name: string, value: string) => attributes.set(name, value),
+    toggleAttribute: (name: string, force: boolean) => force ? attributes.set(name, "") : attributes.delete(name),
+    getAttribute: (name: string) => attributes.get(name) ?? null,
   } as unknown as Element;
 }

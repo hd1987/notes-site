@@ -1,3 +1,5 @@
+import { activateSidebarTab } from "./sidebar-tabs";
+
 export function openMobileSearchSidebar(
   shell: HTMLElement | null,
   isMobile: boolean,
@@ -8,13 +10,7 @@ export function openMobileSearchSidebar(
     shell.classList.add("is-sidebar-open");
   }
 
-  for (const button of tabButtons) {
-    button.classList.toggle("is-active", button.getAttribute("data-tab-button") === "articles");
-  }
-
-  for (const panel of tabPanels) {
-    panel.classList.toggle("is-active", panel.getAttribute("data-tab-panel") === "articles");
-  }
+  activateSidebarTab("articles", tabButtons, tabPanels);
 }
 
 export function shouldKeepMobileSidebarOpen(target: Element): boolean {
