@@ -13,6 +13,7 @@ type Props = {
 };
 
 const { notes, currentNote, headings = [] } = Astro.props;
+const canonical = currentNote ? new URL(currentNote.url, Astro.site) : undefined;
 const pageTitle = currentNote ? `${currentNote.title} - notes-site` : "notes-site";
 
 function formatDate(date: Date | undefined) {
@@ -30,6 +31,7 @@ function formatFilePath(filePath: string) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={currentNote?.description || "Markdown notes site"} />
+    {canonical && <link rel="canonical" href={canonical} />}
     <title>{pageTitle}</title>
   </head>
   <body>
@@ -37,14 +39,14 @@ function formatFilePath(filePath: string) {
       <TopBar />
       <aside class="sidebar" data-sidebar>
         <div class="sidebar-tabs" role="tablist" aria-label="Sidebar views">
-          <button class="sidebar-tab is-active" type="button" data-tab-button="articles">Articles</button>
-          <button class="sidebar-tab" type="button" data-tab-button="outline">Outline</button>
+          <button class="sidebar-tab is-active" type="button" role="tab" id="articles-tab" aria-controls="articles-panel" aria-selected="true" tabindex="0" data-tab-button="articles">Articles</button>
+          <button class="sidebar-tab" type="button" role="tab" id="outline-tab" aria-controls="outline-panel" aria-selected="false" tabindex="-1" data-tab-button="outline">Outline</button>
         </div>
 
-        <section class="sidebar-panel is-active" data-tab-panel="articles">
+        <section class="sidebar-panel is-active" id="articles-panel" role="tabpanel" aria-labelledby="articles-tab" tabindex="0" data-tab-panel="articles">
           <ArticleList notes={notes} currentSlug={currentNote?.slug} />
         </section>
-        <section class="sidebar-panel" data-tab-panel="outline">
+        <section class="sidebar-panel" id="outline-panel" role="tabpanel" aria-labelledby="outline-tab" tabindex="0" hidden data-tab-panel="outline">
           <ArticleOutline headings={headings} />
         </section>
       </aside>
@@ -79,6 +81,7 @@ function formatFilePath(filePath: string) {
     </div>
 
     <script>
+      import { activateSidebarTab } from "../lib/sidebar-tabs";
       import { shouldKeepMobileSidebarOpen } from "../lib/mobile-search-sidebar";
 
       const shell = document.querySelector("[data-shell]");
@@ -89,13 +92,22 @@ function formatFilePath(filePath: string) {
         button.addEventListener("click", () => {
           const target = button.getAttribute("data-tab-button");
 
-          for (const item of tabButtons) {
-            item.classList.toggle("is-active", item === button);
-          }
+          activateSidebarTab(target ?? "articles", tabButtons, tabPanels);
+        });
+      }
 
-          for (const panel of tabPanels) {
-            panel.classList.toggle("is-active", panel.getAttribute("data-tab-panel") === target);
-          }
+      const tabs = [...tabButtons];
+      for (const [index, button] of tabs.entries()) {
+        button.addEventListener("keydown", (event) => {
+          if (!(event instanceof KeyboardEvent)) return;
+          const next = event.key === "ArrowRight" ? (index + 1) % tabs.length
+            : event.key === "ArrowLeft" ? (index + tabs.length - 1) % tabs.length
+            : event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : -1;
+          if (next < 0) return;
+          event.preventDefault();
+          const target = tabs[next];
+          activateSidebarTab(target.getAttribute("data-tab-button") ?? "articles", tabs, tabPanels);
+          if (target instanceof HTMLElement) target.focus();
         });
       }
 
